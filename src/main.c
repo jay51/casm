@@ -3,6 +3,8 @@
 #include <getopt.h>
 
 #include "utils.h"
+#include "lexer.h"
+
 
 
 int main(int argc, char** argv) {
@@ -21,13 +23,15 @@ int main(int argc, char** argv) {
             break;
         case 's':
             file_name = optarg;
-            char *file_content = read_file(file_name);
+            char *file_content = malloc(512 * sizeof(char));
+            read_file(file_name, file_content, 512, 10);
             if(file_content)
                 printf("file is :\n%s", file_content);
 
             break;
         case 'S':
             file_name = optarg;
+            lexer_init(file_name);
             printf("will print asm to file %s\n", optarg);
             break;
         case '?':

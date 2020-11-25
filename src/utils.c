@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "utils.h"
 
@@ -24,20 +28,22 @@ int str_find(char *s, char c) {
  * Read a file content into a buffer
  * returns buffer with file content
  */
-char* read_file(char *file_name) {
-    FILE *f = fopen(file_name, "r");
+char* read_file(char *file_name, char* buffer, size_t buff_size, size_t offset) {
+    int fd = open(file_name, O_RDONLY);
 
-    if(f) {
-        fseek(f, 0, SEEK_END);
-        // make sure the file size is less than 2G
-        int file_size = ftell(f);
-        fseek(f, 0, SEEK_SET);
-
-        char *buffer = malloc(sizeof(char) * file_size);
-        if(buffer) {
-            fread(buffer, sizeof(char), file_size, f);
+    if(fd && buffer) {
+        /*
+        size_t size = buff_size;
+        if(buff_size == -1) {
+            fseek(f, 0, SEEK_END);
+            // make sure the file size is less than 2G
+            size = ftell(f);
+            fseek(f, 0, SEEK_SET);
         }
-        fclose(f);
+        */
+
+        pread(fd, buffer, buff_size, offset);
+        close(fd);
         return buffer;
     }
     return NULL;
