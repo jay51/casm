@@ -25,6 +25,7 @@ int main(int argc, char** argv) {
             file_name = optarg;
             char *file_content = malloc(512 * sizeof(char));
             read_file(file_name, file_content, 512, 10);
+
             if(file_content)
                 printf("file is :\n%s", file_content);
 
@@ -32,7 +33,13 @@ int main(int argc, char** argv) {
         case 'S':
             file_name = optarg;
             lexer_init(file_name);
-            printf("will print asm to file %s\n", optarg);
+            int idx = 0;
+            while(idx < 20) {
+                char c = lexer_get_next_char();
+                printf("%c\n", c);
+                idx++;
+            }
+            printf("will print asm to file %s\n", file_name);
             break;
         case '?':
             printf("Usage: casm - L|A|s|S|? <file>: %c\n", optopt);

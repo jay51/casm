@@ -8,10 +8,11 @@
 
 typedef struct LEXER {
     bool is_eof;
-    int buffer_idx;
+    int idx;
     int offset;
     char curr_char;
     char *buffer;
+    char *file_name;
     enum key_tokens {
       KEY_ASM,
       KEY_BREAK,
@@ -40,7 +41,9 @@ typedef struct LEXER {
 } lex;
 
 bool is_eof(char ch);
+
 void lexer_init(char *file_name);
 char lexer_get_next_char();
+void lexer_read_next_block();
 
 #endif
