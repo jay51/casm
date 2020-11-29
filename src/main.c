@@ -15,6 +15,14 @@ int main(int argc, char** argv) {
         switch(option){
         case 'l':
             file_name = optarg;
+            lexer_init(file_name);
+            TOKEN *tok;
+            int count = 0;
+            while(tok = lexer_get_next_token()) {
+                if(tok->type == END_OF_FILE) break;
+                count++;
+                printf("%d: type: %d, value: %s\n", count, tok->type, tok->value);
+            }
             printf("will print lexer: %s\n", optarg);
             break;
         case 'a':
