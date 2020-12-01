@@ -3,19 +3,18 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#define BUFFER_SIZE 512
 
 
 typedef struct lex {
     bool is_eof;
     int idx;
-    int offset;
     char curr_char;
     char *buffer;
     char *file_name;
 } LEXER;
 
 typedef struct token {
+    char *value;
     enum type {
         //empty token
         NONE,
@@ -113,18 +112,16 @@ typedef struct token {
         SEMICOLON,
     } type;
 
-    char *value;
 } TOKEN;
 
-bool is_eof(char ch);
+TOKEN *make_token(int type, char *value);
 TOKEN *identifier();
 TOKEN *literal();
 
 void lexer_init(char *file_name);
 char lexer_get_next_char();
-void lexer_read_next_block();
-
-TOKEN *make_token(int type, char *value);
 TOKEN *lexer_get_next_token();
+
+bool is_eof(char ch);
 
 #endif

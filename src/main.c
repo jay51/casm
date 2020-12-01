@@ -31,8 +31,7 @@ int main(int argc, char** argv) {
             break;
         case 's':
             file_name = optarg;
-            char *file_content = malloc(512 * sizeof(char));
-            read_file(file_name, file_content, 512, 10);
+            char *file_content = read_file(file_name);
 
             if(file_content)
                 printf("file is :\n%s", file_content);

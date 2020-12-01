@@ -25,25 +25,20 @@ int str_find(char *s, char c) {
 }
 
 /*
- * Read a file content into a buffer
+ * Read a file content into a malloc buffer
  * returns buffer with file content
  */
-char* read_file(char *file_name, char* buffer, size_t buff_size, size_t offset) {
-    int fd = open(file_name, O_RDONLY);
+char* read_file(char *file_name) {
+    FILE *f = fopen(file_name, "r");
 
-    if(fd && buffer) {
-        /*
-        size_t size = buff_size;
-        if(buff_size == -1) {
-            fseek(f, 0, SEEK_END);
-            // make sure the file size is less than 2G
-            size = ftell(f);
-            fseek(f, 0, SEEK_SET);
-        }
-        */
-
-        pread(fd, buffer, buff_size, offset);
-        close(fd);
+    if(f) {
+        fseek(f, 0, SEEK_END);
+        // make sure the file size is less than 2G
+        size_t size = ftell(f);
+        fseek(f, 0, SEEK_SET);
+        char *buffer = malloc(sizeof(char) * size);
+        fread(buffer, sizeof(char), size, f);
+        fclose(f);
         return buffer;
     }
     return NULL;
